@@ -49,10 +49,10 @@ export default class Signin extends Component {
 
     render() {
         return (
-            <div className='login'>
+            <div className="login">
                 <Avatar src='https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y2xvdGhzJTIwc3RvcmVzfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60' />
 
-                <h1><span>Online-Shopping</span>Store</h1>
+                <h1><span>Online-Shopping</span> Store</h1>
 
                 <form>
                     <Grid container justify='space-evenly' spacing={2}>
@@ -106,7 +106,7 @@ export default class Signin extends Component {
 
                         <Grid xs={12} sm={6}>
                             <Link to="/signup" className="login__signup">
-                                create a account here.
+                                create an account here.
                         </Link>
                         </Grid>
                     </Grid>
