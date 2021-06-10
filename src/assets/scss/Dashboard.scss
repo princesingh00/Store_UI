@@ -1,5 +1,30 @@
 .dashboard {
     width: 100%;
-    height: 100vh;
-    background-color: lightgray;
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dashboard__items {
+    width: 95%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.dashboard__header {
+    width: 95%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+.dashboard__header__buttons {
+    width: 30%;
+    display: flex;
+    justify-content: space-around;
 }

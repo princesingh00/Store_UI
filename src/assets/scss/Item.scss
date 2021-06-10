@@ -1,0 +1,17 @@
+.item {
+    width: 50%;
+    margin: 2%;
+    padding: 2%;
+    max-width: 280px;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.item > img {
+    width: 90%;
+}
