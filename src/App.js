@@ -3,6 +3,7 @@ import {
   Route,
   Switch
 } from "react-router-dom";
+import Signin from "./components/Signin";
 import Dashboard from "./views/Dashboard";
 
 
@@ -11,7 +12,8 @@ function App() {
     <div>
       <BrowserRouter>
         <Switch>
-          <Route path="/" component={Dashboard} />
+          <Route path="/" exact component={Dashboard} />
+          <Route path="/signin" component={Signin} />
         </Switch>
       </BrowserRouter>
     </div>
