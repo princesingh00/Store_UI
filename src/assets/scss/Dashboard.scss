@@ -24,7 +24,8 @@
 }
 
 .dashboard__header__buttons {
-    width: 30%;
+    width: 40%;
+    max-width: 400px;
     display: flex;
     justify-content: space-around;
 }
