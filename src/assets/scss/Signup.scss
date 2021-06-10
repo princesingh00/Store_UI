@@ -30,3 +30,15 @@
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     line-height: 1.20588em;
 }
+
+.signup > .MuiSnackbar-anchorOriginBottomCenter{
+    bottom: 100px;
+}
+
+.signup__signin {
+    color: #222;
+    display: flex;
+    padding-left: 5px;
+    padding-top: 12px;
+    font-family: sans-serif;
+}

@@ -2,10 +2,14 @@ import React, { Component } from 'react'
 import {
     Button,
     Grid,
+    Snackbar,
     TextField
 } from '@material-ui/core'
-import '../assets/scss/Signup.scss'
 import Alert from '@material-ui/lab/Alert';
+import userService from '../services/UserService'
+import '../assets/scss/Signup.scss'
+import { Link } from 'react-router-dom';
+
 
 export default class Signup extends Component {
 
@@ -18,62 +22,119 @@ export default class Signup extends Component {
             alertMsg: "",
             alertColor: "",
             showPassword: false,
-            alert: false
+            alert: false,
+            errors: {
+                name: "",
+                username: "",
+                password: ""
+            }
         };
     }
 
+    handleChange = (event) => {
+        event.preventDefault();
+        const { name, value } = event.target;
+        let errors = this.state.errors;
+
+        switch (name) {
+            case 'name':
+                errors.name = value.length < 6
+                    ? 'Name must be 5 characters long!'
+                    : '';
+                break;
+            case 'username':
+                errors.username = value.length < 6
+                    ? 'Username must be 6 characters long!'
+                    : '';
+                break;
+            case 'password':
+                errors.password = value.length < 8
+                    ? 'Password must be 6 characters long!'
+                    : '';
+                break;
+            default:
+                break;
+        }
+        this.setState({ errors, [name]: value })
+    }
+
+    handleCloseSnackBar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({ alert: false });
+    };
+
     handleSignUp = () => {
-        console.log(this.state);
+            let requestBody = {
+                name: this.state.name,
+                username: this.state.username,
+                password: this.state.password
+            }
+        new userService().signup(requestBody)
+            .then(res => {
+                this.setState({
+                    alertMsg: res.data.message,
+                    alertColor: "success",
+                    alert: true
+                })
+                setTimeout(() => {
+                    this.props.history.replace('/signin', null)
+                }, 2000);
+            },
+                err => {
+                    this.setState({
+                        alertMsg: err.response.data.message,
+                        alertColor: "error",
+                        alert: true
+                    })
+                })
     };
 
     render() {
         return (
             <div className="signup">
-                {alert ? <Alert severity={this.state.alertColor} variant="filled" >{this.state.alertMsg}</Alert> : null}
                 <form>
                     <h2>Sign up</h2>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
                                 required
-                                id="name"
                                 name="name"
                                 label="Your name"
                                 fullWidth
                                 autoComplete="name"
-                                onChange={(e) => this.setState({
-                                    name: e.target.value
-                                })}
+                                onChange={this.handleChange}
+                                helperText={this.state.errors.name}
                             />
                         </Grid>
 
                         <Grid item xs={12}>
                             <TextField
                                 required
-                                id="username"
+                                name="username"
                                 label="Username"
                                 fullWidth
-                                onChange={(e) => this.setState({
-                                    username: e.target.value
-                                })}
+                                onChange={this.handleChange}
+                                helperText={this.state.errors.username}
                             />
                         </Grid>
+
                         <Grid item xs={12}>
                             <TextField
                                 required
                                 name="password"
-                                label="password"
+                                label="Password"
                                 type="password"
-                                onChange={(e) => this.setState({
-                                    password: e.target.value
-                                })}
+                                onChange={this.handleChange}
                                 fullWidth
+                                helperText={this.state.errors.password}
                             />
                         </Grid>
-                       
+
                         <Grid item xs={12} />
                         <Grid item xs={12} sm={4} />
-                       
+
                         <Grid item xs={12} sm={2}>
                             <Button
                                 variant="contained"
@@ -85,17 +146,19 @@ export default class Signup extends Component {
                         </Button>
                         </Grid>
 
-                        <Grid item xs={12} sm={2}>
-                            <Button
-                                variant="text"
-                                color="primary"
-                                fullWidth
-                            >
-                                Signin
-                        </Button>
+                        <Grid item xs={12} sm={4}>
+                            <Link to="/signin" className="signup__signin">
+                                Login here.
+                        </Link>
                         </Grid>
                     </Grid>
                 </form>
+
+                <Snackbar open={this.state.alert} onClose={this.handleCloseSnackBar} autoHideDuration={1500}>
+                    <Alert elevation={2} severity={this.state.alertColor} onClose={this.handleCloseSnackBar}>
+                        {this.state.alertMsg}
+                    </Alert>
+                </Snackbar>
             </div>
         )
     }
