@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import Signin from "./components/Signin";
 import Signup from "./components/Signup";
+import GuardedRoute from "./config/GuardedRoute";
 import Dashboard from "./views/Dashboard";
 
 
@@ -13,7 +14,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Switch>
-          <Route path="/dashboard" component={Dashboard} />
+          <GuardedRoute path="/dashboard" component={Dashboard} />
           <Route path="/signin" component={Signin} />
           <Route path="/signup" component={Signup} />
         </Switch>
