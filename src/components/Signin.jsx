@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {
     Avatar,
     Button,
+    CircularProgress,
     FormControl,
     Grid,
     IconButton,
@@ -31,7 +32,8 @@ export default class Signin extends Component {
             alertMsg: "",
             alertColor: "",
             showPassword: false,
-            alert: false
+            alert: false,
+            isLoading: false
         };
     }
 
@@ -53,6 +55,7 @@ export default class Signin extends Component {
     };
 
     handleSignin = () => {
+        this.setState({ isLoading: true })
         let requestBody = {
             username: this.state.username,
             password: this.state.password
@@ -61,6 +64,7 @@ export default class Signin extends Component {
             .then(res => {
                 sessionStorage.setItem("token", String(res.data.user.token));
                 this.setState({
+                    isLoading: false,
                     alertMsg: res.data.message,
                     alertColor: "success",
                     alert: true
@@ -71,6 +75,7 @@ export default class Signin extends Component {
             },
                 err => {
                     this.setState({
+                        isLoading: false,
                         alertMsg: err.response.data.message,
                         alertColor: "error",
                         alert: true
@@ -81,7 +86,7 @@ export default class Signin extends Component {
     render() {
         return (
             <div className="login">
-                <Avatar src='https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y2xvdGhzJTIwc3RvcmVzfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
+                <Avatar src='https://images.unsplash.com/photo-1582719188393-bb71ca45dbb9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHN0b3JlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
                     alt="..." />
 
                 <h1><span>Online-Shopping</span> Store</h1>
@@ -132,8 +137,11 @@ export default class Signin extends Component {
                                 style={{ margin: "1%" }}
                                 onClick={this.handleSignin}
                             >
-                                Signin
-                        </Button>
+                                {this.state.isLoading ?
+                                    <CircularProgress size={24} color="inherit" /> :
+                                    "Signin"
+                                }
+                            </Button>
                         </Grid>
 
                         <Grid xs={12} sm={6}>

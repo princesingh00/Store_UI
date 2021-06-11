@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {
     Button,
+    CircularProgress,
     Grid,
     Snackbar,
     TextField
@@ -23,10 +24,12 @@ export default class Signup extends Component {
             alertColor: "",
             showPassword: false,
             alert: false,
+            isLoading: false,
             errors: {
                 name: "",
                 username: "",
-                password: ""
+                password: "",
+                validation: ""
             }
         };
     }
@@ -59,28 +62,42 @@ export default class Signup extends Component {
     }
 
     handleSignUp = () => {
+        this.setState({ isLoading: true })
         let requestBody = {
             name: this.state.name,
             username: this.state.username,
             password: this.state.password
         }
-        new userService().signup(requestBody)
-            .then(res => {
-                this.setState({
-                    alertMsg: res.data.message,
-                    alertColor: "success",
-                    alert: true
+        if (requestBody.name.length > 5 &&
+            requestBody.username.length > 5 &&
+            requestBody.password.length > 5)
+            new userService().signup(requestBody)
+                .then(res => {
+                    this.setState({
+                        isLoading: false,
+                        alertMsg: res.data.message,
+                        alertColor: "success",
+                        alert: true
+                    })
+                    setTimeout(() => {
+                        this.props.history.replace('/signin', null)
+                    }, 2000);
+                }, (err) => {
+                    this.setState({
+                        isLoading: false,
+                        alertMsg: err.response.data.message,
+                        alertColor: "error",
+                        alert: true
+                    })
                 })
-                setTimeout(() => {
-                    this.props.history.replace('/signin', null)
-                }, 2000);
-            }, (err) => {
-                this.setState({
-                    alertMsg: err.response.data.message,
-                    alertColor: "error",
-                    alert: true
-                })
-            })
+        else {
+            this.setState({
+                alertMsg: "Name, Username, Password must be 6 char long!",
+                alertColor: "error",
+                isLoading: false,
+                alert: true
+            });
+        }
     };
 
     render() {
@@ -134,8 +151,11 @@ export default class Signup extends Component {
                                 fullWidth
                                 onClick={this.handleSignUp}
                             >
-                                Signup
-                        </Button>
+                                {this.state.isLoading ?
+                                    <CircularProgress size={24} color="inherit" /> :
+                                    "Signin"
+                                }
+                            </Button>
                         </Grid>
 
                         <Grid item xs={12} sm={4}>
