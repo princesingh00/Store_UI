@@ -4,8 +4,8 @@ import {
   Route,
   Switch
 } from "react-router-dom";
-import Signin from "./components/Signin";
-import Signup from "./components/Signup";
+import Signin from "./views/Signin";
+import Signup from "./views/Signup";
 import Dashboard from "./views/Dashboard";
 import GuardedRoute from "./config/GuardedRoute";
 
