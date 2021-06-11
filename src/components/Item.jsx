@@ -6,21 +6,17 @@ import '../assets/scss/Item.scss'
 
 function Item({ itemId, name, imageUrl, price }) {
 
+    const userId = sessionStorage.getItem("token");
+
     const [alert, setAlert] = React.useState(false);
+    const [alertMsg, setAlertMsg] = React.useState();
 
     const handleClick = () => {
-        const userId = sessionStorage.getItem("token");
         new CartService().addItemToCart(userId, itemId)
             .then(res => {
+                setAlertMsg(res.data.message);
                 setAlert(true);
             });
-    };
-
-    const handleCloseSnackBar = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setAlert(false);
     };
 
     return (
@@ -29,11 +25,16 @@ function Item({ itemId, name, imageUrl, price }) {
                 <img src={imageUrl} alt="item_" />
                 <h2>{name}</h2>
                 <h2>₹ {price}</h2>
+                <h4>{itemId}</h4>
             </div>
 
-            <Snackbar open={alert} onClose={handleCloseSnackBar} autoHideDuration={2000}>
-                <Alert elevation={2} severity="success">
-                    {"Item Added to Cart"}
+            <Snackbar open={alert}
+                onClose={() => setAlert(false)}
+                autoHideDuration={2000}
+            >
+                <Alert elevation={2}
+                    severity="success" variant="filled">
+                    {alertMsg}
                 </Alert>
             </Snackbar>
         </>

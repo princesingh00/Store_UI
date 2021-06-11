@@ -9,7 +9,6 @@ import {
     TableBody,
     TableCell,
     TableContainer,
-    TableHead,
     TableRow
 } from '@material-ui/core';
 import React from 'react'
@@ -30,10 +29,6 @@ function Order({ showOrder }) {
             })
     };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     return (
         <div>
             <Button color="primary" variant="contained" onClick={handleClickOpen}>
@@ -41,20 +36,15 @@ function Order({ showOrder }) {
            </Button>
             <Dialog
                 open={open}
-                onClose={handleClose}
+                onClose={() => setOpen(false)}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{"User Orders"}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">User Order Ids</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         <TableContainer component={Paper}>
                             <Table aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Order Ids</TableCell>
-                                    </TableRow>
-                                </TableHead>
                                 <TableBody>
                                     {Array.from(orderItems).map((order) => (
                                         <TableRow key={order._id}>

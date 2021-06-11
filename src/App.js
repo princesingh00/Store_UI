@@ -5,9 +5,8 @@ import {
 } from "react-router-dom";
 import Signin from "./components/Signin";
 import Signup from "./components/Signup";
-import GuardedRoute from "./config/GuardedRoute";
 import Dashboard from "./views/Dashboard";
-
+import GuardedRoute from "./config/GuardedRoute";
 
 function App() {
   return (

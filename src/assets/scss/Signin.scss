@@ -8,7 +8,7 @@
     background: whitesmoke;
 }
 
-.login>form {
+.login > form {
     width: 90%;
     max-width: 800px;
     height: max-content;
@@ -19,14 +19,14 @@
     align-items: center;
 }
 
-.login>.MuiAvatar-root {
+.login > .MuiAvatar-root {
     width: 150px;
     height: 150px;
     margin: 10px;
     border: 3px solid whitesmoke;
 }
 
-.login>h1 {
+.login > h1 {
     color: #111;
     text-transform: uppercase;
     letter-spacing: -0.03em;
@@ -35,17 +35,17 @@
     line-height: 2.2em;
 }
 
-.login>h1>span {
+.login > h1 > span {
     font-weight: bolder;
 }
 
-.login>.MuiFormControl-root {
+.login > .MuiFormControl-root {
     margin: 8px;
 
 }
 
 .login__signup {
-    color: #222;
+    color: #222; 
     display: flex;
 
     padding-top: 15px;

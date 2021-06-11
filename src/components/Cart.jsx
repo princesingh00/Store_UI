@@ -38,18 +38,16 @@ function Cart() {
             });
     };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     return (
         <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+            <Button variant="outlined" color="primary"
+                onClick={handleClickOpen}
+            >
                 Cart
            </Button>
             <Dialog
                 open={open}
-                onClose={handleClose}
+                onClose={() => setOpen(false)}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >

@@ -15,7 +15,11 @@ function Dashboard() {
 
     const [items, setItems] = React.useState([]);
     const [alert, setAlert] = React.useState(false);
-    const [showOrders, setShowOrders] = React.useState(false);
+    const [alertOption, setAlertOption] = React.useState({
+        msg: '',
+        severity: ''
+    });
+    const [placedOrder, setPlacedOrder] = React.useState([]);
 
     useEffect(() => {
         new ItemService().getAllItems()
@@ -26,25 +30,32 @@ function Dashboard() {
         await new CartService().getCartByUser(userId)
             .then(res => {
                 if (res.data.cart) return res.data.cart._id;
+                else {
+                    setAlertOption({
+                        msg: "Cart is empty",
+                        severity: "error"
+                    });
+                    setAlert(true);
+                }
             })
             .then(cartId =>
                 new CartService()
                     .convertCartToOrder(cartId, userId)
                     .then(res => {
+                        setPlacedOrder(res.data.cart.items)
+                        console.log(placedOrder);
                         new OrderService().createOrder(userId, cartId)
                             .then(res => {
+                                setAlertOption({
+                                    msg: res.data.message,
+                                    severity: "success"
+                                });
                                 setAlert(true);
-                                setShowOrders(true)
-                                // window.location.reload();
+                                setTimeout(function () {
+                                    window.location.reload(1);
+                                }, 3200);
                             });
                     }))
-    };
-
-    const handleCloseSnackBar = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setAlert(false);
     };
 
     return (
@@ -58,7 +69,7 @@ function Dashboard() {
                         Checkout
                     </Button>
                     <Cart />
-                    <Order showOrder={showOrders} />
+                    <Order />
                 </div>
             </div>
 
@@ -74,9 +85,17 @@ function Dashboard() {
                 )}
             </div>
 
-            <Snackbar open={alert} onClose={handleCloseSnackBar} autoHideDuration={2000}>
-                <Alert elevation={2} severity="success">
-                    {"Order Placed Successfully"}
+            <Snackbar
+                open={alert}
+                onClose={() => setAlert(false)}
+                autoHideDuration={2800}
+            >
+                <Alert elevation={2}
+                    severity={alertOption.severity}
+                    variant="filled">
+                    {Array.from(placedOrder)
+                        .map(id => { return <h5>{id}</h5> })}
+                    {alertOption.msg}
                 </Alert>
             </Snackbar>
         </div>
