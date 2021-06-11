@@ -14,6 +14,7 @@ function Item({ itemId, name, imageUrl, price }) {
     const handleClick = () => {
         new CartService().addItemToCart(userId, itemId)
             .then(res => {
+                console.log(res);
                 setAlertMsg(res.data.message);
                 setAlert(true);
             });

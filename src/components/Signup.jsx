@@ -48,7 +48,7 @@ export default class Signup extends Component {
                     : '';
                 break;
             case 'password':
-                errors.password = value.length < 8
+                errors.password = value.length < 6
                     ? 'Password must be 6 characters long!'
                     : '';
                 break;
@@ -58,19 +58,12 @@ export default class Signup extends Component {
         this.setState({ errors, [name]: value })
     }
 
-    handleCloseSnackBar = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        this.setState({ alert: false });
-    };
-
     handleSignUp = () => {
-            let requestBody = {
-                name: this.state.name,
-                username: this.state.username,
-                password: this.state.password
-            }
+        let requestBody = {
+            name: this.state.name,
+            username: this.state.username,
+            password: this.state.password
+        }
         new userService().signup(requestBody)
             .then(res => {
                 this.setState({
@@ -81,14 +74,13 @@ export default class Signup extends Component {
                 setTimeout(() => {
                     this.props.history.replace('/signin', null)
                 }, 2000);
-            },
-                err => {
-                    this.setState({
-                        alertMsg: err.response.data.message,
-                        alertColor: "error",
-                        alert: true
-                    })
+            }, (err) => {
+                this.setState({
+                    alertMsg: err.response.data.message,
+                    alertColor: "error",
+                    alert: true
                 })
+            })
     };
 
     render() {
@@ -154,8 +146,15 @@ export default class Signup extends Component {
                     </Grid>
                 </form>
 
-                <Snackbar open={this.state.alert} onClose={this.handleCloseSnackBar} autoHideDuration={1500}>
-                    <Alert elevation={2} severity={this.state.alertColor} onClose={this.handleCloseSnackBar}>
+                <Snackbar
+                    open={this.state.alert}
+                    onClose={() => this.setState({ alert: false })}
+                    autoHideDuration={1500}
+                >
+                    <Alert
+                        elevation={2}
+                        severity={this.state.alertColor}
+                    >
                         {this.state.alertMsg}
                     </Alert>
                 </Snackbar>

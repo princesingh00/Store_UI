@@ -1,5 +1,5 @@
 module.exports = {
-    apiUrl: "http://localhost:4000",
+    apiUrl: "https://online-shoppers-store.herokuapp.com",
     
     signin: "/user/login",
     signup: "/user/create",

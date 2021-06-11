@@ -1,6 +1,7 @@
 import { Button, Snackbar } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import React, { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import '../assets/scss/Dashboard.scss'
 import Cart from '../components/Cart'
 import Item from '../components/Item'
@@ -12,6 +13,8 @@ import OrderService from '../services/OrderService'
 function Dashboard() {
 
     const userId = sessionStorage.getItem("token");
+
+    const history = useHistory();
 
     const [items, setItems] = React.useState([]);
     const [alert, setAlert] = React.useState(false);
@@ -53,9 +56,14 @@ function Dashboard() {
                                 setAlert(true);
                                 setTimeout(function () {
                                     window.location.reload(1);
-                                }, 3200);
+                                }, 2900);
                             });
                     }))
+    };
+
+   const  handleLogout = () => {
+        sessionStorage.clear();
+        history.push('/signin');
     };
 
     return (
@@ -70,6 +78,10 @@ function Dashboard() {
                     </Button>
                     <Cart />
                     <Order />
+                    <Button variant="contained" color="inherit"
+                        onClick={handleLogout}>
+                        Logout
+                    </Button>
                 </div>
             </div>
 
