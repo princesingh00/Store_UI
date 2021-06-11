@@ -1,5 +1,6 @@
 import {
   BrowserRouter,
+  Redirect,
   Route,
   Switch
 } from "react-router-dom";
@@ -16,6 +17,7 @@ function App() {
           <GuardedRoute path="/dashboard" component={Dashboard} />
           <Route path="/signin" component={Signin} />
           <Route path="/signup" component={Signup} />
+          <Redirect to="/dashboard" />
         </Switch>
       </BrowserRouter>
     </div>

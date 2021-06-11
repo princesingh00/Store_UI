@@ -127,7 +127,7 @@ export default class Signin extends Component {
                         <Grid xs={12} sm={5}>
                             <Button
                                 variant="contained"
-                                color="inherit"
+                                color="primary"
                                 fullWidth
                                 style={{ margin: "1%" }}
                                 onClick={this.handleSignin}

@@ -46,7 +46,6 @@ function Dashboard() {
                     .convertCartToOrder(cartId, userId)
                     .then(res => {
                         setPlacedOrder(res.data.cart.items)
-                        console.log(placedOrder);
                         new OrderService().createOrder(userId, cartId)
                             .then(res => {
                                 setAlertOption({
@@ -61,7 +60,7 @@ function Dashboard() {
                     }))
     };
 
-   const  handleLogout = () => {
+    const handleLogout = () => {
         sessionStorage.clear();
         history.push('/signin');
     };
