@@ -1,5 +1,5 @@
 import React from 'react'
-import { Snackbar } from '@material-ui/core'
+import { CircularProgress, Snackbar } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import CartService from '../services/CartService'
 import '../assets/scss/Item.scss'
@@ -10,12 +10,15 @@ function Item({ itemId, name, imageUrl, price }) {
 
     const [alert, setAlert] = React.useState(false);
     const [alertMsg, setAlertMsg] = React.useState();
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const handleClick = () => {
+        setIsLoading(true);
         new CartService().addItemToCart(userId, itemId)
             .then(res => {
                 console.log(res);
                 setAlertMsg(res.data.message);
+                setIsLoading(false);
                 setAlert(true);
             });
     };
@@ -26,7 +29,10 @@ function Item({ itemId, name, imageUrl, price }) {
                 <img src={imageUrl} alt="item_" />
                 <h2>{name}</h2>
                 <h2>₹ {price}</h2>
-                <h4>{itemId}</h4>
+                {isLoading ?
+                    <CircularProgress size={39} /> :
+                    <h4>{itemId}</h4>
+                }
             </div>
 
             <Snackbar open={alert}

@@ -1,6 +1,6 @@
-import { Button, Snackbar } from '@material-ui/core'
-import Alert from '@material-ui/lab/Alert'
 import React, { useEffect } from 'react'
+import { Button, CircularProgress, Snackbar } from '@material-ui/core'
+import Alert from '@material-ui/lab/Alert'
 import { useHistory } from 'react-router-dom'
 import '../assets/scss/Dashboard.scss'
 import Cart from '../components/Cart'
@@ -23,6 +23,7 @@ function Dashboard() {
         severity: ''
     });
     const [placedOrder, setPlacedOrder] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(false);
 
     useEffect(() => {
         new ItemService().getAllItems()
@@ -30,6 +31,7 @@ function Dashboard() {
     }, [])
 
     const handleCheckout = async () => {
+        setIsLoading(true);
         await new CartService().getCartByUser(userId)
             .then(res => {
                 if (res.data.cart) return res.data.cart._id;
@@ -38,6 +40,7 @@ function Dashboard() {
                         msg: "Cart is empty",
                         severity: "error"
                     });
+                    setIsLoading(false);
                     setAlert(true);
                 }
             })
@@ -52,6 +55,7 @@ function Dashboard() {
                                     msg: res.data.message,
                                     severity: "success"
                                 });
+                                setIsLoading(false);
                                 setAlert(true);
                                 setTimeout(function () {
                                     window.location.reload(1);
@@ -73,7 +77,10 @@ function Dashboard() {
                 <div className="dashboard__header__buttons">
                     <Button variant="contained" color="secondary"
                         onClick={handleCheckout}>
-                        Checkout
+                        {isLoading ?
+                            <CircularProgress size={24} color="inherit" /> :
+                            "Checkout"
+                        }
                     </Button>
                     <Cart />
                     <Order />
@@ -103,7 +110,9 @@ function Dashboard() {
             >
                 <Alert elevation={2}
                     severity={alertOption.severity}
-                    variant="filled">
+                    variant="filled"
+                    icon={false}
+                >
                     {Array.from(placedOrder)
                         .map(id => { return <h5>{id}</h5> })}
                     {alertOption.msg}

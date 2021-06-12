@@ -1,5 +1,6 @@
 import {
     Button,
+    CircularProgress,
     Dialog,
     DialogContent,
     DialogContentText,
@@ -22,8 +23,10 @@ function Cart() {
     const [open, setOpen] = React.useState(false);
     const [data, setData] = React.useState([]);
     const [cartId, setCartId] = React.useState();
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const handleClickOpen = () => {
+        setIsLoading(true);
         new cartService().getCartByUser(userId)
             .then(res => {
                 if (res.data.cart === null) {
@@ -34,6 +37,7 @@ function Cart() {
                     setData(res.data.cart.items);
                     setCartId(res.data.cart._id);
                 }
+                setIsLoading(false);
                 setOpen(true);
             });
     };
@@ -41,10 +45,9 @@ function Cart() {
     return (
         <div>
             <Button variant="outlined" color="primary"
-                onClick={handleClickOpen}
-            >
-                Cart
-           </Button>
+                onClick={handleClickOpen}>
+                {isLoading ? <CircularProgress size={24} /> : "Cart"}
+            </Button>
             <Dialog
                 open={open}
                 onClose={() => setOpen(false)}

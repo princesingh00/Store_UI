@@ -153,7 +153,7 @@ export default class Signup extends Component {
                             >
                                 {this.state.isLoading ?
                                     <CircularProgress size={24} color="inherit" /> :
-                                    "Signin"
+                                    "Signup"
                                 }
                             </Button>
                         </Grid>

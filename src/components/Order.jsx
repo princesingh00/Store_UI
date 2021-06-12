@@ -1,5 +1,6 @@
 import {
     Button,
+    CircularProgress,
     Dialog,
     DialogContent,
     DialogContentText,
@@ -20,11 +21,14 @@ function Order({ showOrder }) {
 
     const [open, setOpen] = React.useState(showOrder);
     const [orderItems, setOrderItems] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const handleClickOpen = () => {
+        setIsLoading(true);
         new OrderService().getOrdersByUser(userId)
             .then(res => {
                 setOrderItems(res.data.order);
+                setIsLoading(false);
                 setOpen(true);
             })
     };
@@ -32,8 +36,8 @@ function Order({ showOrder }) {
     return (
         <div>
             <Button color="primary" variant="contained" onClick={handleClickOpen}>
-                Orders
-           </Button>
+                {isLoading ? <CircularProgress color="inherit" size={24} /> : "Orders"}
+            </Button>
             <Dialog
                 open={open}
                 onClose={() => setOpen(false)}

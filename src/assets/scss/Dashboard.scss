@@ -31,6 +31,10 @@
     justify-content: space-around;
 }
 
+.dashboard__header__buttons > .MuiButton-root {
+    width: 25%;
+}
+
 
 @media only screen and (max-width: 950px) {
     .dashboard__header {
